@@ -17,6 +17,8 @@ La metodología elegida se resume en los siguientes pasos:
 
 <br>
 
+_Tal como se detalla en la consigna del trabajo final, este repositorio es PÚBLICO_
+
 ***
 
 
