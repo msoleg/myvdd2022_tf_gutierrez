@@ -20,7 +20,6 @@
 library(RSelenium)  # para realizar el scraping dinamico
 library(rvest)      # para realizar scraping de tablas
 library(dplyr)
-library(readr)      # write_delim
 
 
 ############################### FUNCIONES ######################################
@@ -91,8 +90,8 @@ get_table_team <- function(){
   }
     
   # renombro los campos (a espanol)
-  colnames(df_team) <- c("NOMBRE", "EDAD", "VALORACION GENERAL", "POTENCIAL", "EQUIPO Y CONTRATO",  "ID_JUGADOR",
-                         "ALTURA", "PESO", "PIE FAVORITO", "MEJOR POSICION", "VALOR", "SALARIO")
+  colnames(df_team) <- c("NOMBRE", "EDAD", "VALORACION_GENERAL", "POTENCIAL", "EQUIPO_Y_CONTRATO",  "ID_JUGADOR",
+                         "ALTURA", "PESO", "PIE_FAVORITO", "MEJOR_POSICION", "VALOR", "SALARIO")
   return(df_team)
 }
 
@@ -249,7 +248,7 @@ data_table_html <- tabla_pos_final$getPageSource()
 df_pos_final <- html_table(read_html(data_table_html %>% unlist()))[[1]] %>% 
   rename(EQUIPO = "Selección",
          PUESTO = "Puesto",
-         "INSTANCIA ALCANZADA" = "Instancia alcanzada")
+         INSTANCIA_ALCANZADA = "Instancia alcanzada")
 
 # hago el join final entre los 2 dataframes:
 data_final <- df_teams %>% left_join(df_pos_final, by=c('EQUIPO'))
@@ -259,7 +258,7 @@ remDr$close()
 
 # creo el subdirectorio (en caso de no existir) y exporto los datos a un csv
 dir.create("data", showWarnings = FALSE)
-write_delim(data_final, file = "data/raw_data.csv", delim = '|')
+readr::write_delim(data_final, file = "data/raw_data.csv", delim = '|')
 
 
 
