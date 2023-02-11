@@ -5,3 +5,4 @@
 # ignoro el cache de python
 .ipynb_checkpoints/
 .Rhistory
+.RData
