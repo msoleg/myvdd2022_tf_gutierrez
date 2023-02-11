@@ -274,8 +274,9 @@ data_final <- df_teams %>% left_join(df_pos_final, by=c('EQUIPO'))
 remDr$close()
 
 # creo el subdirectorio (en caso de no existir) y exporto los datos a un csv
-dir.create("data", showWarnings = FALSE)
-readr::write_delim(data_final, file = "data/raw_data.csv", delim = '|')
+dir.create("aplicacion", showWarnings = FALSE)
+dir.create("aplicacion/data", showWarnings = FALSE)
+readr::write_delim(data_final, file = "aplicacion/data/raw_data.csv", delim = '|')
 
 
 

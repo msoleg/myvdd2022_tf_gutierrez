@@ -17,7 +17,7 @@ La metodología elegida se resume en los siguientes pasos:
 Herramientas: 
 - Librería `RSelenium` para la navegación entre las landing pages de los equipos.
 - Librería `rvest` para extraer tablas HTML completas.
-- Librarí `dplyr` para la manipulación y transformación básica de los datos. 
+- Librería `dplyr` para la manipulación y transformación básica de los datos. 
     
 2. **VALIDACIÓN Y PROCESAMIENTO DE LOS DATOS** Se realizó una validación de los datos obtenidos en la etapa anterior para asegurar la correcta recolección. Luego, se aplicó la limpieza y procesamiento de los mismos. En esta etapa se incluyen tareas tales como quitar contenidos extras del nombre del jugador, separar la altura y peso en las distintas unidades, cambiar a español las posiciones de los jugadores, quitar campos que no serán utilizados (tales como valor y sueldo que se encuentran en 0), etc. 
 
