@@ -26,6 +26,8 @@ Herramientas:
 
 <br>
 
+_Tal como se detalla en la consigna del trabajo final, este repositorio es PÚBLICO_
+
 ***
 
 
