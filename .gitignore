@@ -1,0 +1,7 @@
+# ignoro las pruebas realizadas en python
+*.py
+*.ipynb
+
+# ignoro el cache de python
+.ipynb_checkpoints/
+.Rhistory
