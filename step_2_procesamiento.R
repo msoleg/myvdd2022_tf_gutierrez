@@ -4,18 +4,35 @@
 #
 # ALUMNA: Maria Soledad Gutierrez
 #
-#...............................................................................
 
-# library(tidyr)
-library(dplyr)
+############################ CONSIDERACIONES ###################################
 
+# Se requiere tener instalados los siguientes paquetes:
+#     - readr
+#     - dplyr
+#     - tidyr
+#
+
+############################ CARGA DE PAQUETES ################################
+
+# Instalo paquetes necesarios en caso de no estar instalados previamente
+paquetes <- c("readr", "dplyr", "tidyr")
+instalados <- paquetes %in% rownames(installed.packages())
+if (any(instalados == FALSE)) {
+  install.packages(paquetes[!instalados])
+}
+
+library(dplyr, quietly = T)
+
+###############################################################################
+############################ CARGA DE PAQUETES ################################
 # cargo la data cruda
 raw_data <- readr::read_delim(file = "data/raw_data.csv", delim = '|', show_col_types = F)
 
 head(raw_data) 
 
-################################################################################
-###################### CHEQUEOS DE CONSISTENCIA ################################
+###############################################################################
+###################### CHEQUEOS DE CONSISTENCIA ###############################
 
 # nombres en español y claros que coinciden con los campos buscados
 colnames(raw_data)
@@ -61,35 +78,37 @@ raw_data %>% group_by(GRUPO) %>%
   summarise(total_teams = n_distinct(ID_EQUIPO), .groups = 'drop')
 
 
-################################################################################
-########### TRANSFORMACION DE DATOS Y GENERACION DE NUEVOS CAMPOS ##############
+###############################################################################
+########## TRANSFORMACION DE DATOS Y GENERACION DE NUEVOS CAMPOS ##############
 
+# to
+ls_posiciones <- c("Portero",
+                   "Lateral Derecho", "Defensa Central", "Carrillero Derecho", "Carrillero Izquierdo",
+                   "Medio Centro Defensivo", "Medio Centro", "MEdio Centro Ofensivo", "Medio Izquierdo", "Medio Derecho",
+                   "Extremo Derecho", "Extremo Izquierdo", "Lateral Izquierdo", "Delantero Centro", "Media Punta")
+# from
+names(ls_posiciones) <- c("GK",
+                          "RB", "CB", "RWB", "LWB",
+                          "CDM", "CM", "CAM", "LM", "RM",
+                          "RW", "LW", "LB", "ST", "CF")
 data <- raw_data %>%
   mutate(
     # quito las posibles posiciones del jugador de la cadena de su nombre
     NOMBRE = vapply(strsplit(NOMBRE, "GK|RWB|CB|LWB|CM|RW|ST|RM|LW|CDM|CAM|LB|LM|RB|CF"), `[`, 1, FUN.VALUE=character(1)),
     # paso a espanol los campos de pie favorito
-    PIE_FAVORITO = plyr::mapvalues(PIE_FAVORITO, from = c("Right", "Left"), to = c("Derecho", "Izquierdo")),
+    PIE_FAVORITO = recode(PIE_FAVORITO, "Right" = "Derecho", "Left" = "Izquierdo"),
     # guardo en otro campo las descripciones del las posiciones
-    MEJOR_POSICION_DESC = plyr::mapvalues(MEJOR_POSICION, 
-                                          from = c("GK",
-                                                   "RB", "CB", "RWB", "LWB",
-                                                   "CDM", "CM", "CAM", "LM", "RM",
-                                                   "RW", "LW", "LB", "ST", "CF"),
-                                          to = c("Portero",
-                                                 "Lateral Derecho", "Defensa Central", "Carrillero Derecho", "Carrillero Izquierdo",
-                                                 "Medio Centro Defensivo", "Medio Centro", "MEdio Centro Ofensivo", "Medio Izquierdo", "Medio Derecho",
-                                                 "Extremo Derecho", "Extremo Izquierdo", "Lateral Izquierdo", "Delantero Centro", "Media Punta")),
+    MEJOR_POSICION_DESC = recode(MEJOR_POSICION, !!!ls_posiciones),
     # me quedo con el peso en kg
     "PESO (KG)" = as.integer(vapply(strsplit(PESO, "kg"), `[`, 1, FUN.VALUE=character(1))),
     # me quedo con la altura en cm
     "ALTURA (CM)" = as.integer(vapply(strsplit(ALTURA, "cm"), `[`, 1, FUN.VALUE=character(1))),
-    # calculo del ICM
-    "ICM (KG/M^2)" = `PESO (KG)`/((`ALTURA (CM)`/100)**2)
+    # calculo del IMC
+    "IMC (KG/M^2)" = `PESO (KG)`/((`ALTURA (CM)`/100)**2)
   ) %>%
   # separo la informacion de equipo y contrato
   tidyr::separate(EQUIPO_Y_CONTRATO, into = c("EQUIPO_ACTUAL", "CONTRATO"), sep = "\\s\\([0-9]+\\)\\s", extra = "drop") %>%
-  # remuevo los campos sin info o que contienen nans
+  # remuevo los campos sin info o que no utilizare
   select(-c("VALOR", "SALARIO", "ALTURA", "PESO"))
 
 ################################################################################

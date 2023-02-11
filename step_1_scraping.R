@@ -13,10 +13,24 @@
 # 2. El navegador elegido en la configuracion es firefox.
 #    Mi version es 109.0.1 (64-bit).
 #
-# 3. Los acentos del archivo fueron omitidos.
+# 3. Se requiere tener instalados los siguientes paquetes:
+#     - readr  
+#     - RSelenium
+#     - rvest
+#     - dplyr
+#
+# 4. Los acentos del archivo fueron omitidos.
 
 
 ############################ CARGA DE PAQUETES ################################
+
+# Instalo paquetes necesarios en caso de no estar instalados previamente
+paquetes <- c("readr","RSelenium", "rvest", "dplyr")
+instalados <- paquetes %in% rownames(installed.packages())
+if (any(instalados == FALSE)) {
+  install.packages(paquetes[!instalados])
+}
+
 library(RSelenium)  # para realizar el scraping dinamico
 library(rvest)      # para realizar scraping de tablas
 library(dplyr)
@@ -218,24 +232,27 @@ df_teams$GRUPO <- rep(c("GRUPO A", "GRUPO B", "GRUPO C", "GRUPO D",
                         "GRUPO E", "GRUPO F", "GRUPO G", "GRUPO H"),
                       c(26*4, 26*4-1, rep(26*4, 6)))
 
+
 # mapeo a espanol los nombres de paises
-df_teams$EQUIPO <- plyr::mapvalues(df_teams$EQUIPO,
-                     from= c('Qatar', 'Ecuador', 'Senegal', 'Netherlands',
-                              'England', 'Iran', 'United States', 'Wales',
-                              'Argentina', 'Saudi Arabia', 'Mexico', 'Poland',
-                              'France', 'Australia', 'Denmark', 'Tunisia',
-                              'Spain', 'Costa Rica', 'Germany', 'Japan', 
-                              'Belgium', 'Canada', 'Morocco', 'Croatia',
-                              'Brazil', 'Serbia', 'Switzerland', 'Cameroon',  
-                              'Portugal', 'Ghana', 'Uruguay', 'Korea Republic'),
-                     to=c("Qatar", "Ecuador", "Senegal", "Países Bajos",
-                          "Inglaterra", "Irán", "Estados Unidos", "Gales",
-                          "Argentina", "Arabia Saudita", "México", "Polonia", 
-                          "Francia", "Australia", "Dinamarca", "Túnez",
-                          "España", "Costa Rica", "Alemania", "Japón",
-                          "Bélgica", "Canadá", "Marruecos", "Croacia",  
-                          "Brasil", "Serbia", "Suiza", "Camerún",
-                          "Portugal", "Ghana", "Uruguay", "Corea del Sur"))
+# to
+ls_equipos <- c("Qatar", "Ecuador", "Senegal", "Países Bajos",
+                "Inglaterra", "Irán", "Estados Unidos", "Gales",
+                "Argentina", "Arabia Saudita", "México", "Polonia", 
+                "Francia", "Australia", "Dinamarca", "Túnez",
+                "España", "Costa Rica", "Alemania", "Japón",
+                "Bélgica", "Canadá", "Marruecos", "Croacia",  
+                "Brasil", "Serbia", "Suiza", "Camerún",
+                "Portugal", "Ghana", "Uruguay", "Corea del Sur")
+# from
+names(ls_equipos) <- c('Qatar', 'Ecuador', 'Senegal', 'Netherlands',
+                       'England', 'Iran', 'United States', 'Wales',
+                       'Argentina', 'Saudi Arabia', 'Mexico', 'Poland',
+                       'France', 'Australia', 'Denmark', 'Tunisia',
+                       'Spain', 'Costa Rica', 'Germany', 'Japan', 
+                       'Belgium', 'Canada', 'Morocco', 'Croatia',
+                       'Brazil', 'Serbia', 'Switzerland', 'Cameroon',  
+                       'Portugal', 'Ghana', 'Uruguay', 'Korea Republic')
+df_teams$EQUIPO <- recode(df_teams$EQUIPO, !!!ls_equipos)
 
 
 # busco información de tabla final de resultados en otra pagina:
