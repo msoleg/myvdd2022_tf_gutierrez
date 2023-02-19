@@ -48,13 +48,11 @@ library(htmltools)
 ############################### CARGA DE DATOS #################################
 
 # cargo los datos provenientes del scraping
-ruta_data <- file.path(getwd(), "data/clean_data.csv") # armo la ruta al archivo ya que lo tengo en otra carpeta
-data <- readr::read_delim(file = ruta_data, delim = '|', show_col_types = F)
+data <- readr::read_delim(file = "data/clean_data.csv", delim = '|', show_col_types = F)
 
 
 # datos geo json, los cuales fueron descargados de: https://github.com/johan/world.geo.json
-ruta_poly <- file.path(getwd(), "geodata/countries.geo.json") 
-WorldCountry <-geojsonio::geojson_read(ruta_poly, what = "sp")
+WorldCountry <-geojsonio::geojson_read("geodata/countries.geo.json", what = "sp")
 
 
 ######################## OBJETOS PARA EL GRAFICO DE MAPA #######################

@@ -27,7 +27,7 @@ library(dplyr, quietly = T)
 ###############################################################################
 ############################ CARGA DE PAQUETES ################################
 # cargo la data cruda
-raw_data <- readr::read_delim(file = "step_3_ShinyApp/data/raw_data.csv", delim = '|', show_col_types = F)
+raw_data <- readr::read_delim(file = "data/raw_data.csv", delim = '|', show_col_types = F)
 
 head(raw_data) 
 
@@ -117,5 +117,5 @@ data <- raw_data %>%
 ################################################################################
 #################### GUARDADO DE LA DATA PROCESADA #############################
 
-readr::write_delim(data, file = "step_3_ShinyApp//data/clean_data.csv", delim = '|')
+readr::write_delim(data, file = "data/clean_data.csv", delim = '|')
 
