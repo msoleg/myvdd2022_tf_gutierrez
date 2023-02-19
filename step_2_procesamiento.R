@@ -27,7 +27,7 @@ library(dplyr, quietly = T)
 ###############################################################################
 ############################ CARGA DE PAQUETES ################################
 # cargo la data cruda
-raw_data <- readr::read_delim(file = "aplicacion/data/raw_data.csv", delim = '|', show_col_types = F)
+raw_data <- readr::read_delim(file = "step_3_ShinyApp/data/raw_data.csv", delim = '|', show_col_types = F)
 
 head(raw_data) 
 
@@ -104,7 +104,10 @@ data <- raw_data %>%
     # me quedo con la altura en cm
     "ALTURA (CM)" = as.integer(vapply(strsplit(ALTURA, "cm"), `[`, 1, FUN.VALUE=character(1))),
     # calculo del IMC
-    "IMC (KG/M^2)" = `PESO (KG)`/((`ALTURA (CM)`/100)**2)
+    "IMC (KG/M^2)" = `PESO (KG)`/((`ALTURA (CM)`/100)**2),
+    # reemplazo algunas imagenes que no están en la pag de la fifa pero son necesarias
+    SRC_JUGADOR = recode(SRC_JUGADOR, "https://cdn.sofifa.net/players/272/483/23_60.png" = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxYKbGXDxAMuqzU0GS6zIALNogukHLYxA6Qj8HICRl8JMRcnnFsUFDcpXONg3ncK2APSM&usqp=CAU",
+    "https://cdn.sofifa.net/players/272/470/23_60.png" = "https://cdn.resfu.com/img_data/players/medium/892591.jpg?size=300x&lossy=1")
   ) %>%
   # separo la informacion de equipo y contrato
   tidyr::separate(EQUIPO_Y_CONTRATO, into = c("EQUIPO_ACTUAL", "CONTRATO"), sep = "\\s\\([0-9]+\\)\\s", extra = "drop") %>%
@@ -114,5 +117,5 @@ data <- raw_data %>%
 ################################################################################
 #################### GUARDADO DE LA DATA PROCESADA #############################
 
-readr::write_delim(data, file = "aplicacion/data/clean_data.csv", delim = '|')
+readr::write_delim(data, file = "step_3_ShinyApp//data/clean_data.csv", delim = '|')
 
