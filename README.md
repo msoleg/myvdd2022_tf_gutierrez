@@ -7,10 +7,25 @@ Repositorio para la entrega del trabajo final correspondiente al curso **Manejo 
 
 <br>
 
-<br>
+---
+
+### <b> PARA VISUALIZAR LA APP: </b> <br>
+
+- Puede ejecutar la aplicación localmente: 
+
+```
+library(shiny)
+
+runGitHub("msoleg/myvdd2022_tf_gutierrez")
+```
+- Puede visitar la versión deployada en [shinyapp.io](https://msoleg.shinyapps.io/myvdd2022_tf_gutierrez/)
 
 
-La metodología elegida se resume en los siguientes pasos:
+--- 
+
+### <b> METODOLOGÍA ELEGIDA PARA EL TRABAJO FINAL </b> 
+
+Se resume en los siguientes pasos:
 
 1. **OBTENCIÓN DE LA DATA Y PROCESAMIENTO INICIAL** Se realizó un scraping de la página oficial de la [FIFA](https://sofifa.com/teams?keyword=) (en francés Fédération Internationale de Football Association) con el fin de obtener información sobre los 32 equipos participantes de la __"Copa Mundial de Fútbol Qatar 2022"__. También se unió lo obtenido a la tabla de posiciones finales obtenida desde [SPORTINGNEWS](https://www.sportingnews.com/ar/futbol/news/posiciones-finales-mundial-qatar-2022/crblvcbnrg0yxbkkucxvzb9r). 
 
